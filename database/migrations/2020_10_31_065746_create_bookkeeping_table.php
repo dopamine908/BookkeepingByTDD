@@ -13,7 +13,7 @@ class CreateBookkeepingTable extends Migration
      */
     public function up()
     {
-        Schema::create('bookkeeping', function (Blueprint $table) {
+        Schema::create('Bookkeeping', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
             $table->enum('type', ['increase', 'decrease']);

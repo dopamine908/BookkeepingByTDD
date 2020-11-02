@@ -1,0 +1,413 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Bookkeeping",
+        "description": "Bookkeeping by TDD",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http"
+        }
+    ],
+    "paths": {
+        "/Bookkeeping": {
+            "post": {
+                "description": "new bookkeeping",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "form",
+                        "description": "bookkeeping title",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "form",
+                        "description": "bookkeeping type",
+                        "required": true,
+                        "schema": {
+                            "type": "enum",
+                            "enum": [
+                                "increase",
+                                "decrease"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "form",
+                        "description": "money amount",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "create success",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "summary": "success",
+                                        "value": {
+                                            "status": "success"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/success"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "input error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "error": {
+                                        "summary": "error",
+                                        "value": {
+                                            "status": "fail",
+                                            "message": "input invalid"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/input_invalid"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "description": "get bookkeeping data",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "bookkeeping title",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "bookkeeping type",
+                        "required": false,
+                        "schema": {
+                            "type": "enum",
+                            "enum": [
+                                "increase",
+                                "decrease"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "money amount",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get data success",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "summary": "success",
+                                        "value": {
+                                            "status": "success",
+                                            "data": [
+                                                {
+                                                    "title": "title1",
+                                                    "type": "increase",
+                                                    "amount": " 123",
+                                                    "id": " 2"
+                                                },
+                                                {
+                                                    "title": "title2",
+                                                    "type": "decrease",
+                                                    "amount": " 1233",
+                                                    "id": " 1"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "empty": {
+                                        "summary": "empty",
+                                        "value": {
+                                            "status": "success",
+                                            "data": [
+                                            ]
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/data_success"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/Bookkeeping/{id}": {
+            "delete": {
+                "description": "delete booking",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "bookkeeping id",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "delete success",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "summary": "success",
+                                        "value": {
+                                            "status": "success"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/success"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "input error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "error": {
+                                        "summary": "error",
+                                        "value": {
+                                            "status": "fail",
+                                            "message": "input invalid"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/input_invalid"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "bookkeeping with this id not found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "error": {
+                                        "summary": "id not found",
+                                        "value": {
+                                            "status": "fail",
+                                            "message": "resource not found"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/resource_not_found"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update bookkeeping data",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "bookkeeping id",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "in": "form",
+                        "description": "bookkeeping title",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "form",
+                        "description": "bookkeeping type",
+                        "required": true,
+                        "schema": {
+                            "type": "enum",
+                            "enum": [
+                                "increase",
+                                "decrease"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "form",
+                        "description": "money amount",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "update success",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "summary": "success",
+                                        "value": {
+                                            "status": "success"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/success"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "bookkeeping with this id not found",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "error": {
+                                        "summary": "id not found",
+                                        "value": {
+                                            "status": "fail",
+                                            "message": "resource not found"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/resource_not_found"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "input error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "error": {
+                                        "summary": "error",
+                                        "value": {
+                                            "status": "fail",
+                                            "message": "input invalid"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/input_invalid"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "success": {
+                "type": "json",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "input_invalid": {
+                "type": "json",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "data_success": {
+                "type": "json",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "int"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "enum",
+                                    "enum": [
+                                        "increase",
+                                        "decrease"
+                                    ]
+                                },
+                                "amount": {
+                                    "type": "int"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "resource_not_found": {
+                "type": "json",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

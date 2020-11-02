@@ -15,7 +15,8 @@ class POST_BookkeepingTest extends TestCase
      * @test
      */
     public function createBookkeeping_Increase_Success_200()
-    {//Arrange
+    {
+        //Arrange
         $arrange_data = [
             'title' => 'test123',
             'type' => 'increase',
@@ -33,5 +34,30 @@ class POST_BookkeepingTest extends TestCase
             ]
         );
         $this->assertDatabaseHas('Bookkeeping', $arrange_data);
+    }
+
+    /**
+     * @test
+     */
+    public function createBookkeeping_title_empty_422()
+    {
+        //Arrange
+        $arrange_data = [
+            'type' => 'increase',
+            'amount' => 1000,
+        ];
+
+        //Actual
+        $response = $this->post(self::URL, $arrange_data);
+
+        //Assert
+        $response->assertStatus(422);
+        $response->assertJson(
+            [
+                'status' => 'fail',
+                'message' => 'input invalid'
+            ]
+        );
+        $this->assertDatabaseMissing('Bookkeeping', $arrange_data);
     }
 }

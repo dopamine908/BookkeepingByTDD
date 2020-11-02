@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Bookkeeping\Create;
 use App\Services\Bookkeeping as BookkeepingService;
-use Illuminate\Http\Request;
 
 class BookkeepingController extends Controller
 {
@@ -14,7 +14,7 @@ class BookkeepingController extends Controller
         $this->BookkeepingService = $BookkeepingService;
     }
 
-    public function create(Request $request)
+    public function create(Create $request)
     {
         $this->BookkeepingService->create($request->title, $request->type, $request->amount);
         return response()->json(['status' => 'success'], 201);

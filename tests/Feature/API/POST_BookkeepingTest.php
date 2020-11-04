@@ -85,4 +85,31 @@ class POST_BookkeepingTest extends TestCase
         );
         $this->assertDatabaseMissing('Bookkeeping', $arrange_data);
     }
+
+    /**
+     * @test
+     */
+    public function createBookkeeping_type_not_increase_or_decrease_422()
+    {
+        //Arrange
+        $arrange_data = [
+            'title' => 'test_title',
+            'type' => 'not_increase_or_decrease',
+            'amount' => 1000,
+        ];
+
+        //Actual
+        $response = $this->post(self::URL, $arrange_data);
+
+        //Assert
+        $response->assertStatus(422);
+        $response->assertJson(
+            [
+                'status' => 'fail',
+                'message' => 'input invalid'
+            ]
+        );
+        $this->assertDatabaseMissing('Bookkeeping', $arrange_data);
+    }
+
 }

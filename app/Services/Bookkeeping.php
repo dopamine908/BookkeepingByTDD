@@ -19,4 +19,9 @@ class Bookkeeping
     {
         return $this->BookkeepingRepo->create($title, $type, $amount);
     }
+
+    public function update($id, $title, $type, $amount): bool
+    {
+        return $this->BookkeepingRepo->update($id, $title, $type, $amount);
+    }
 }

@@ -33,6 +33,7 @@ class Create extends FormRequest
                 'required',
                 Rule::in(['increase', 'decrease']),
             ],
+            'amount' => 'required',
         ];
     }
 

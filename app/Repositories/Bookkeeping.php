@@ -23,4 +23,13 @@ class Bookkeeping
         $Bookkeeping->amount = $amount;
         return $Bookkeeping->save();
     }
+
+    public function update($id, $title, $type, $amount): bool
+    {
+        $Bookkeeping = $this->BookkeepingModel->find($id);
+        $Bookkeeping->title = $title;
+        $Bookkeeping->type = $type;
+        $Bookkeeping->amount = $amount;
+        return $Bookkeeping->save();
+    }
 }

@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Bookkeeping\Create;
-use App\Models\Bookkeeping as BookkeepingModel;
+use App\Repositories\Bookkeeping as BookkeepingRepo;
 use App\Services\Bookkeeping as BookkeepingService;
 use Illuminate\Http\Request;
 
 class BookkeepingController extends Controller
 {
     private $BookkeepingService;
+    private $BookkeepingRepo;
 
-    public function __construct(BookkeepingService $BookkeepingService)
+    public function __construct(BookkeepingService $BookkeepingService, BookkeepingRepo $BookkeepingRepo)
     {
         $this->BookkeepingService = $BookkeepingService;
+        $this->BookkeepingRepo = $BookkeepingRepo;
     }
 
     public function create(Create $request)
@@ -24,11 +26,7 @@ class BookkeepingController extends Controller
 
     public function update(Request $request, $id)
     {
-        $Bookkeeping = BookkeepingModel::find($id);
-        $Bookkeeping->title = $request->title;
-        $Bookkeeping->type = $request->type;
-        $Bookkeeping->amount = $request->amount;
-        $Bookkeeping->save();
+        $this->BookkeepingRepo->update($id, $request->title, $request->type, $request->amount);
         return response()->json(['status' => 'success'], 201);
     }
 }

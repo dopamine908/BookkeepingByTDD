@@ -137,4 +137,30 @@ class POST_BookkeepingTest extends TestCase
         $this->assertDatabaseMissing('Bookkeeping', $arrange_data);
     }
 
+    /**
+     * @test
+     */
+    public function createBookkeeping_amount_string_422()
+    {
+        //Arrange
+        $arrange_data = [
+            'title' => 'test_title',
+            'type' => 'increase',
+            'amount' => 'string',
+        ];
+
+        //Actual
+        $response = $this->post(self::URL, $arrange_data);
+
+        //Assert
+        $response->assertStatus(422);
+        $response->assertJson(
+            [
+                'status' => 'fail',
+                'message' => 'input invalid'
+            ]
+        );
+        $this->assertDatabaseMissing('Bookkeeping', $arrange_data);
+    }
+
 }

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Repository;
 
+use App\Models\Bookkeeping as BookkeepingModel;
+use App\Repositories\Bookkeeping;
 use App\Repositories\Bookkeeping as BookkeepingRepo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -34,5 +36,33 @@ class BookkeepingTest extends TestCase
                 'amount' => $amount,
             ]
         );
+    }
+
+    /**
+     * @test
+     */
+    public function updateBookkeeping_success()
+    {
+        //Arrange
+        $original_data = BookkeepingModel::factory()->create();
+        $BookkeepingRepo = $this->app->make(Bookkeeping::class);
+        $title = 'new_title';
+        $type = 'increase';
+        $amount = 123456;
+
+        //Actual
+        $actual = $BookkeepingRepo->update($original_data->id, $title, $type, $amount);
+
+        //Assert
+        $this->assertTrue($actual);
+        $this->assertDatabaseHas(
+            'Bookkeeping',
+            [
+                'title' => $title,
+                'type' => $type,
+                'amount' => $amount,
+            ]
+        );
+        $this->assertDatabaseMissing('Bookkeeping', $original_data->toArray());
     }
 }

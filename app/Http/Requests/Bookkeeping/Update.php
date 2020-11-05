@@ -36,6 +36,7 @@ class Update extends FormRequest
                 'required',
                 'integer'
             ],
+            'id' => 'required',
         ];
     }
 
@@ -51,4 +52,10 @@ class Update extends FormRequest
             )
         );
     }
+
+    public function validationData()
+    {
+        return array_merge($this->all(), request()->route()->parameters);
+    }
+
 }

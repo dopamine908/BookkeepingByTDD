@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Bookkeeping\Create;
+use App\Http\Requests\Bookkeeping\Delete;
 use App\Http\Requests\Bookkeeping\Update;
 use App\Services\Bookkeeping as BookkeepingService;
-use Illuminate\Http\Request;
 
 class BookkeepingController extends Controller
 {
@@ -28,7 +28,7 @@ class BookkeepingController extends Controller
         return response()->json(['status' => 'success'], 201);
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Delete $request, $id)
     {
         $this->BookkeepingService->delete($id);
         return response()->json(['status' => 'success'], 201);

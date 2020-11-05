@@ -24,4 +24,9 @@ class Bookkeeping
     {
         return $this->BookkeepingRepo->update($id, $title, $type, $amount);
     }
+
+    public function delete($id): bool
+    {
+        return $this->BookkeepingRepo->delete($id);
+    }
 }

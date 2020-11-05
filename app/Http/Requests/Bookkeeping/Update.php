@@ -5,6 +5,7 @@ namespace App\Http\Requests\Bookkeeping;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class Update extends FormRequest
 {
@@ -27,7 +28,10 @@ class Update extends FormRequest
     {
         return [
             'title' => 'required',
-            'type' => 'required',
+            'type' => [
+                'required',
+                Rule::in(['increase', 'decrease'])
+            ],
         ];
     }
 

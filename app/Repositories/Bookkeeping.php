@@ -38,4 +38,9 @@ class Bookkeeping
             throw new BookkeepingResourceNotFoundException();
         }
     }
+
+    public function delete($id): bool
+    {
+        return $this->BookkeepingModel->destroy($id);
+    }
 }

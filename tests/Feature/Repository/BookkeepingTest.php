@@ -97,4 +97,23 @@ class BookkeepingTest extends TestCase
         $this->assertDatabaseHas('Bookkeeping', Arr::except($original_data->toArray(), ['updated_at', 'created_at']));
     }
 
+    /**
+     * @test
+     */
+    public function deleteBookkeeping_success()
+    {
+        //Arrange
+        $original_data = BookkeepingModel::factory()->create();
+        $BookkeepingRepo = $this->app->make(BookkeepingRepo::class);
+
+        //Actual
+        $actual = $BookkeepingRepo->delete($original_data->id);
+
+        //Assert
+        $this->assertTrue($actual);
+        $this->assertDatabaseMissing(
+            'Bookkeeping',
+            Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
+        );
+    }
 }

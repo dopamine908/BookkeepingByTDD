@@ -73,4 +73,23 @@ class BookkeepingTest extends TestCase
         //Actual
         $actual = $BookkeepingService->update($id, $title, $type, $amount);
     }
+
+    /**
+     * @test
+     */
+    public function deleteBookkeeping_success()
+    {
+        //Arrange
+        $mock_bookkeeping_repo = Mockery::mock(BookkeepingRepo::class);
+        $mock_bookkeeping_repo->shouldReceive('delete')->once()->andReturn(true);
+        $this->app->instance(BookkeepingRepo::class, $mock_bookkeeping_repo);
+        $BookkeepingService = $this->app->make(BookkeepingService::class);
+        $id = 1;
+
+        //Actual
+        $actual = $BookkeepingService->delete($id);
+
+        //Assert
+        $this->assertTrue($actual);
+    }
 }

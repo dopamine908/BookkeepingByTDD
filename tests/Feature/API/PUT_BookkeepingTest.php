@@ -94,4 +94,31 @@ class PUT_BookkeepingTest extends TestCase
         $this->assertDatabaseHas('Bookkeeping', Arr::except($original_data->toArray(), ['updated_at', 'created_at']));
     }
 
+    /**
+     * @test
+     */
+    public function updateBookkeeping_type_not_increase_or_drease_422()
+    {
+        //Arrange
+        $original_data = Bookkeeping::factory()->create();
+        $arrange_data = [
+            'title' => 'new_title',
+            'type' => 'not_increase_or_decrease',
+            'amount' => 12345
+        ];
+
+        //Actual
+        $response = $this->put(self::URL . '/' . $original_data->id, $arrange_data);
+
+        //Assert
+        $response->assertStatus(422);
+        $response->assertJson(
+            [
+                'status' => 'fail',
+                'message' => 'input invalid'
+            ]
+        );
+        $this->assertDatabaseMissing('Bookkeeping', $arrange_data);
+        $this->assertDatabaseHas('Bookkeeping', Arr::except($original_data->toArray(), ['updated_at', 'created_at']));
+    }
 }

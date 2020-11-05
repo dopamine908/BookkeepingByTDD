@@ -55,4 +55,29 @@ class DELETE_BookkeepingTest extends TestCase
             Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
         );
     }
+
+    /**
+     * @test
+     */
+    public function deleteBookkeeping_id_string_422()
+    {
+        //Arrange
+        $original_data = Bookkeeping::factory()->create();
+
+        //Actual
+        $response = $this->delete(self::URL . '/string');
+
+        //Assert
+        $response->assertStatus(422);
+        $response->assertJson(
+            [
+                'status' => 'fail',
+                'message' => 'input invalid'
+            ]
+        );
+        $this->assertDatabaseHas(
+            'Bookkeeping',
+            Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
+        );
+    }
 }

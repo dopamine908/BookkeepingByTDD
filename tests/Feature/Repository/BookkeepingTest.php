@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Repository;
 
+use App\Exceptions\BookkeepingResourceNotFoundException;
 use App\Models\Bookkeeping as BookkeepingModel;
 use App\Repositories\Bookkeeping;
 use App\Repositories\Bookkeeping as BookkeepingRepo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class BookkeepingTest extends TestCase
@@ -65,4 +67,34 @@ class BookkeepingTest extends TestCase
         );
         $this->assertDatabaseMissing('Bookkeeping', $original_data->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function updateBookkeeping_fail()
+    {
+        //Arrange
+        $original_data = BookkeepingModel::factory()->create();
+        $BookkeepingRepo = $this->app->make(Bookkeeping::class);
+        $not_exist_id = $original_data->id + 9999;
+        $title = 'new_title';
+        $type = 'increase';
+        $amount = 123456;
+        $this->expectException(BookkeepingResourceNotFoundException::class);
+
+        //Actual
+        $actual = $BookkeepingRepo->update($not_exist_id, $title, $type, $amount);
+
+        //Assert
+        $this->assertDatabaseMissing(
+            'Bookkeeping',
+            [
+                'title' => $title,
+                'type' => $type,
+                'amount' => $amount,
+            ]
+        );
+        $this->assertDatabaseHas('Bookkeeping', Arr::except($original_data->toArray(), ['updated_at', 'created_at']));
+    }
+
 }

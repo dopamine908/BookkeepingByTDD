@@ -24,3 +24,4 @@ Route::middleware('auth:api')->get(
 
 Route::post('Bookkeeping', [BookkeepingController::class, 'create']);
 Route::put('Bookkeeping/{id}', [BookkeepingController::class, 'update']);
+Route::delete('Bookkeeping/{id}', [BookkeepingController::class, 'delete']);

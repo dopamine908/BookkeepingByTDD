@@ -177,4 +177,26 @@ class PUT_BookkeepingTest extends TestCase
         $this->assertDatabaseHas('Bookkeeping', Arr::except($original_data->toArray(), ['updated_at', 'created_at']));
     }
 
+    /**
+     * @test
+     */
+    public function updateBookkeeping_id_empty_422()
+    {
+        //Arrange
+        $original_data = Bookkeeping::factory()->create();
+        $arrange_data = [
+            'title' => 'new_title',
+            'type' => 'increase',
+            'amount' => 123456
+        ];
+
+        //Actual
+        $response = $this->put(self::URL, $arrange_data);
+
+        //Assert
+        $response->assertStatus(405);
+        $this->assertDatabaseMissing('Bookkeeping', $arrange_data);
+        $this->assertDatabaseHas('Bookkeeping', Arr::except($original_data->toArray(), ['updated_at', 'created_at']));
+    }
+
 }

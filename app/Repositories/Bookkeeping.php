@@ -26,7 +26,7 @@ class Bookkeeping
         return $Bookkeeping->save();
     }
 
-    public function update($id, $title, $type, $amount): bool
+    public function update($id, $title, $type, $amount)
     {
         try {
             $Bookkeeping = $this->BookkeepingModel->findOrFail($id);

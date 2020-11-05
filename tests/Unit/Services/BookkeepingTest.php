@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use App\Exceptions\BookkeepingResourceNotFoundException;
 use App\Repositories\Bookkeeping;
 use App\Repositories\Bookkeeping as BookkeepingRepo;
 use App\Services\Bookkeeping as BookkeepingService;
@@ -52,5 +53,24 @@ class BookkeepingTest extends TestCase
 
         //Assert
         $this->assertTrue($actual);
+    }
+
+    /**
+     * @test
+     */
+    public function updateBookkeeping_fail()
+    {
+        //Arrange
+        $mock_bookkeeping_repo = Mockery::mock(BookkeepingRepo::class);
+        $mock_bookkeeping_repo->shouldReceive('update')->once()->andReturn(new BookkeepingResourceNotFoundException());
+        $this->app->instance(BookkeepingRepo::class, $mock_bookkeeping_repo);
+        $BookkeepingService = $this->app->make(BookkeepingService::class);
+        $id = 999999;
+        $title = 'new_title';
+        $type = 'increase';
+        $amount = 123456;
+
+        //Actual
+        $actual = $BookkeepingService->update($id, $title, $type, $amount);
     }
 }

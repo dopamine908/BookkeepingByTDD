@@ -32,7 +32,10 @@ class Update extends FormRequest
                 'required',
                 Rule::in(['increase', 'decrease'])
             ],
-            'amount' => 'required',
+            'amount' => [
+                'required',
+                'integer'
+            ],
         ];
     }
 

@@ -36,7 +36,10 @@ class Update extends FormRequest
                 'required',
                 'integer'
             ],
-            'id' => 'required',
+            'id' => [
+                'required',
+                'integer'
+            ],
         ];
     }
 

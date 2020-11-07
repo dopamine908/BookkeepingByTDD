@@ -80,4 +80,30 @@ class DELETE_BookkeepingTest extends TestCase
             Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
         );
     }
+
+    /**
+     * @test
+     */
+    public function deleteBookkeeping_id_resource_not_exist_404()
+    {
+        //Arrange
+        $original_data = Bookkeeping::factory()->create();
+        $not_exist_id = $original_data->id + 999999;
+
+        //Actual
+        $response = $this->delete(self::URL . '/' . $not_exist_id);
+
+        //Assert
+        $response->assertStatus(404);
+        $response->assertJson(
+            [
+                'status' => 'fail',
+                'message' => 'resource not found'
+            ]
+        );
+        $this->assertDatabaseHas(
+            'Bookkeeping',
+            Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
+        );
+    }
 }

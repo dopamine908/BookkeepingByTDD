@@ -41,6 +41,11 @@ class Bookkeeping
 
     public function delete($id): bool
     {
-        return $this->BookkeepingModel->destroy($id);
+        try {
+            $Bookkeeping = $this->BookkeepingModel->findOrFail($id);
+            return $Bookkeeping->delete();
+        } catch (ModelNotFoundException $exception) {
+            throw new BookkeepingResourceNotFoundException();
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Bookkeeping\Create;
 use App\Http\Requests\Bookkeeping\Delete;
 use App\Http\Requests\Bookkeeping\Update;
+use App\Models\Bookkeeping;
 use App\Services\Bookkeeping as BookkeepingService;
 
 class BookkeepingController extends Controller
@@ -30,7 +31,17 @@ class BookkeepingController extends Controller
 
     public function delete(Delete $request, $id)
     {
-        $this->BookkeepingService->delete($id);
+        if (is_null(Bookkeeping::find($id))) {
+            return response()->json(
+                [
+                    'status' => 'fail',
+                    'message' => 'resource not found'
+                ],
+                404
+            );
+        } else {
+            $this->BookkeepingService->delete($id);
+        }
         return response()->json(['status' => 'success'], 201);
     }
 }

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Bookkeeping\Create;
 use App\Http\Requests\Bookkeeping\Delete;
 use App\Http\Requests\Bookkeeping\Update;
+use App\Models\Bookkeeping;
 use App\Services\Bookkeeping as BookkeepingService;
+use Illuminate\Http\Request;
 
 class BookkeepingController extends Controller
 {
@@ -32,5 +34,19 @@ class BookkeepingController extends Controller
     {
         $this->BookkeepingService->delete($id);
         return response()->json(['status' => 'success'], 201);
+    }
+
+    public function read(Request $request)
+    {
+        $data = Bookkeeping::where('title', '=', $request->title)->first();
+        return response()->json(
+            [
+                'status' => 'success',
+                'data' => [
+                    $data->toArray()
+                ]
+            ],
+            200
+        );
     }
 }

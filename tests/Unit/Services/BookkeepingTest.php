@@ -92,4 +92,19 @@ class BookkeepingTest extends TestCase
         //Assert
         $this->assertTrue($actual);
     }
+
+    /**
+     * @test
+     */
+    public function deleteBookkeeping_fail()
+    {
+        //Arrange
+        $mock_bookkeeping_repo = Mockery::mock(BookkeepingRepo::class);
+        $mock_bookkeeping_repo->shouldReceive('delete')->once()->andReturn(new BookkeepingResourceNotFoundException());
+        $this->instance(BookkeepingRepo::class, $mock_bookkeeping_repo);
+        $BookkeepingService = $this->app->make(BookkeepingService::class);
+
+        //Actual
+        $BookkeepingService->delete(1);
+    }
 }

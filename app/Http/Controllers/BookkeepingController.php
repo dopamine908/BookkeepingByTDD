@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Bookkeeping\Create;
 use App\Http\Requests\Bookkeeping\Delete;
 use App\Http\Requests\Bookkeeping\Update;
+use App\Http\Resources\BookkeepingResourceCollection;
 use App\Models\Bookkeeping;
 use App\Services\Bookkeeping as BookkeepingService;
 use Illuminate\Http\Request;
@@ -38,15 +39,7 @@ class BookkeepingController extends Controller
 
     public function read(Request $request)
     {
-        $data = Bookkeeping::where('title', '=', $request->title)->first();
-        return response()->json(
-            [
-                'status' => 'success',
-                'data' => [
-                    $data->toArray()
-                ]
-            ],
-            200
-        );
+        $data = Bookkeeping::where('title', '=', $request->title)->get();
+        return new BookkeepingResourceCollection($data);
     }
 }

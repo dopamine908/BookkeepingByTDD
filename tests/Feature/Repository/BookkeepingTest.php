@@ -116,4 +116,25 @@ class BookkeepingTest extends TestCase
             Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
         );
     }
+
+    /**
+     * @test
+     */
+    public function deleteBookkeeping_fail()
+    {
+        //Arrange
+        $original_data = BookkeepingModel::factory()->create();
+        $BookkeepingRepo = $this->app->make(BookkeepingRepo::class);
+        $this->expectException(BookkeepingResourceNotFoundException::class);
+        $not_exist_id = $original_data->id + 99999;
+
+        //Actual
+        $actual = $BookkeepingRepo->delete($not_exist_id);
+
+        //Assert
+        $this->assertDatabaseHas(
+            'Bookkeeping',
+            Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
+        );
+    }
 }

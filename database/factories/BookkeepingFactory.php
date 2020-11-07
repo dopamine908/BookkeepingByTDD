@@ -22,7 +22,7 @@ class BookkeepingFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->name,
+            'title' => $this->faker->sha256,
             'type' => $this->faker->randomElement(['increase', 'decrease']),
             'amount' => $this->faker->numberBetween(1, 9999),
         ];

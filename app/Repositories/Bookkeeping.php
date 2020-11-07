@@ -39,7 +39,7 @@ class Bookkeeping
         }
     }
 
-    public function delete($id): bool
+    public function delete($id)
     {
         try {
             $Bookkeeping = $this->BookkeepingModel->findOrFail($id);

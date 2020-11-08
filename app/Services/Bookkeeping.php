@@ -29,4 +29,9 @@ class Bookkeeping
     {
         return $this->BookkeepingRepo->delete($id);
     }
+
+    public function get($title, $type, $amount)
+    {
+        return $this->BookkeepingRepo->get($title, $type, $amount);
+    }
 }

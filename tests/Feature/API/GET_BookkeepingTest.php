@@ -94,4 +94,34 @@ class GET_BookkeepingTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function getBookkeeping_type_200()
+    {
+        //Arrange
+        $original_data = Bookkeeping::factory()->count(10)->state(
+            new Sequence(
+                ['type' => 'increase'],
+                ['type' => 'decrease'],
+            )
+        )->create();
+        $search_target = 'decrease';
+        $expected_data = $original_data->where('type', '=', $search_target);
+
+        //Actual
+        $response = $this->get(self::URL . '?type=' . $search_target);
+
+        //Assert
+        $response->assertStatus(200);
+        $response->assertJson(
+            [
+                'status' => 'success',
+                'data' =>
+                    $expected_data->values()->toArray(),
+            ]
+        );
+    }
+
 }

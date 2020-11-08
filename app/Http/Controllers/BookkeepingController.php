@@ -39,7 +39,7 @@ class BookkeepingController extends Controller
 
     public function read(Request $request)
     {
-        $data = Bookkeeping::where('title', '=', $request->title)->get();
+        $data = Bookkeeping::where('title', '=', $request->title)->orWhere('type', '=', $request->type)->get();
         return new BookkeepingResourceCollection($data);
     }
 }

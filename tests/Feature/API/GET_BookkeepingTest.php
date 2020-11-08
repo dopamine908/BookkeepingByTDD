@@ -5,6 +5,7 @@ namespace Tests\Feature\API;
 use App\Models\Bookkeeping;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class GET_BookkeepingTest extends TestCase
@@ -67,6 +68,29 @@ class GET_BookkeepingTest extends TestCase
                 'status' => 'success',
                 'data' =>
                     $expected_data->values()->toArray(),
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getBookkeeping_title_200()
+    {
+        //Arrange
+        $original_data = Bookkeeping::factory()->count(10)->create();
+        $search_keywords = Str::limit($original_data->first()->title, 10, '');
+        $expected_data = $original_data->first();
+
+        //Actual
+        $response = $this->get(self::URL . '?title=' . $search_keywords);
+
+        //Assert
+        $response->assertStatus(200);
+        $response->assertJson(
+            [
+                'status' => 'success',
+                'data' => [$expected_data->toArray()]
             ]
         );
     }

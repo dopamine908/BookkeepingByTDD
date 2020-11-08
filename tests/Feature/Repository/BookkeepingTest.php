@@ -6,6 +6,7 @@ use App\Exceptions\BookkeepingResourceNotFoundException;
 use App\Models\Bookkeeping as BookkeepingModel;
 use App\Repositories\Bookkeeping;
 use App\Repositories\Bookkeeping as BookkeepingRepo;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
@@ -153,5 +154,27 @@ class BookkeepingTest extends TestCase
 
         //Assert
         $this->assertEquals([$search_target->toArray()], $actual->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function getBookkeeping_many_result()
+    {
+        //Arrange
+        $original_data = BookkeepingModel::factory()->count(10)->state(
+            new Sequence(
+                ['amount' => 123],
+                ['amount' => 456],
+            )
+        )->create();
+        $BookkeepingRepo = $this->app->make(BookkeepingRepo::class);
+        $search_target = $original_data->where('amount', '=', 123)->values();
+
+        //Actual
+        $actual = $BookkeepingRepo->get(null, null, 123);
+
+        //Assert
+        $this->assertEquals($search_target->toArray(), $actual->toArray());
     }
 }

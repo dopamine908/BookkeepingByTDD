@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Exceptions\BookkeepingResourceNotFoundException;
 use App\Models\Bookkeeping as BookkeepingModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 
 class Bookkeeping
 {
@@ -47,5 +48,27 @@ class Bookkeeping
         } catch (ModelNotFoundException $exception) {
             throw new BookkeepingResourceNotFoundException();
         }
+    }
+
+    public function get($title, $type, $amount): Collection
+    {
+        $search = $this->BookkeepingModel;
+
+        if ( ! is_null($title)) {
+            $search = $this->BookkeepingModel->where('title', 'like', '%' . $title . '%');
+            $this->BookkeepingModel->where('title', 'like', '%' . $title . '%');
+        }
+
+        if ( ! is_null($type)) {
+            $search = $this->BookkeepingModel->where('type', '=', $type);
+            $this->BookkeepingModel->where('type', '=', $type);
+        }
+
+        if ( ! is_null($amount)) {
+            $search = $this->BookkeepingModel->where('amount', '=', $amount);
+            $this->BookkeepingModel->where('amount', '=', $amount);
+        }
+
+        return $search->get();
     }
 }

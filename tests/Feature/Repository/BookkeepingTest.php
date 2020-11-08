@@ -137,4 +137,21 @@ class BookkeepingTest extends TestCase
             Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
         );
     }
+
+    /**
+     * @test
+     */
+    public function getBookkeeping_one_result()
+    {
+        //Arrange
+        $original_data = BookkeepingModel::factory()->count(10)->create();
+        $BookkeepingRepo = $this->app->make(BookkeepingRepo::class);
+        $search_target = $original_data->first();
+
+        //Actual
+        $actual = $BookkeepingRepo->get($search_target->title, $search_target->type, $search_target->amount);
+
+        //Assert
+        $this->assertEquals([$search_target->toArray()], $actual->toArray());
+    }
 }

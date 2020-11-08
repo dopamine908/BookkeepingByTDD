@@ -177,4 +177,21 @@ class BookkeepingTest extends TestCase
         //Assert
         $this->assertEquals($search_target->toArray(), $actual->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function getBookkeeping_empty_result()
+    {
+        //Arrange
+        $original_data = BookkeepingModel::factory()->count(10)->create();
+        $BookkeepingRepo = $this->app->make(BookkeepingRepo::class);
+        $search_title = $original_data->first()->title . '1';
+
+        //Actual
+        $actual = $BookkeepingRepo->get($search_title, null, null);
+
+        //Assert
+        $this->assertEquals([], $actual->toArray());
+    }
 }

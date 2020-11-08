@@ -6,17 +6,19 @@ use App\Http\Requests\Bookkeeping\Create;
 use App\Http\Requests\Bookkeeping\Delete;
 use App\Http\Requests\Bookkeeping\Update;
 use App\Http\Resources\BookkeepingResourceCollection;
-use App\Models\Bookkeeping;
+use App\Repositories\Bookkeeping as BookkeepingRepo;
 use App\Services\Bookkeeping as BookkeepingService;
 use Illuminate\Http\Request;
 
 class BookkeepingController extends Controller
 {
     private $BookkeepingService;
+    private $BookkeepingRepo;
 
-    public function __construct(BookkeepingService $BookkeepingService)
+    public function __construct(BookkeepingService $BookkeepingService, BookkeepingRepo $BookkeepingRepo)
     {
         $this->BookkeepingService = $BookkeepingService;
+        $this->BookkeepingRepo = $BookkeepingRepo;
     }
 
     public function create(Create $request)
@@ -39,20 +41,7 @@ class BookkeepingController extends Controller
 
     public function read(Request $request)
     {
-        $BookkeepingModel = new Bookkeeping();
-
-        if ( ! is_null($request->title)) {
-            $BookkeepingModel = $BookkeepingModel->where('title', 'like', '%' . $request->title . '%');
-        }
-
-        if ( ! is_null($request->type)) {
-            $BookkeepingModel = $BookkeepingModel->where('type', '=', $request->type);
-        }
-
-        if ( ! is_null($request->amount)) {
-            $BookkeepingModel = $BookkeepingModel->where('amount', '=', $request->amount);
-        }
-
-        return new BookkeepingResourceCollection($BookkeepingModel->get());
+        $result = $this->BookkeepingRepo->get($request->title, $request->type, $request->amount);
+        return new BookkeepingResourceCollection($result);
     }
 }

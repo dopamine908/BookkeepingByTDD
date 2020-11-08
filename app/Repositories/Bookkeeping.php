@@ -55,18 +55,15 @@ class Bookkeeping
         $search = $this->BookkeepingModel;
 
         if ( ! is_null($title)) {
-            $search = $this->BookkeepingModel->where('title', 'like', '%' . $title . '%');
-            $this->BookkeepingModel->where('title', 'like', '%' . $title . '%');
+            $search = $search->where('title', 'like', '%' . $title . '%');
         }
 
         if ( ! is_null($type)) {
-            $search = $this->BookkeepingModel->where('type', '=', $type);
-            $this->BookkeepingModel->where('type', '=', $type);
+            $search = $search->where('type', '=', $type);
         }
 
         if ( ! is_null($amount)) {
-            $search = $this->BookkeepingModel->where('amount', '=', $amount);
-            $this->BookkeepingModel->where('amount', '=', $amount);
+            $search = $search->where('amount', '=', $amount);
         }
 
         return $search->get();

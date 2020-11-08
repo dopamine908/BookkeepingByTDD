@@ -207,4 +207,28 @@ class GET_BookkeepingTest extends TestCase
         );
     }
 
+    public function getBookkeeping_empty_result_200()
+    {
+        //Arrange
+        $original_data = Bookkeeping::factory()->count(10)->state(
+            new Sequence(
+                ['amount' => 123],
+                ['amount' => 456],
+            )
+        )->create();
+        $search_target = $original_data->first()->title.'1';
+
+        //Actual
+        $response = $this->get(self::URL . '?title=' . $search_target);
+
+        //Assert
+        $response->assertStatus(200);
+        $response->assertJson(
+            [
+                'status' => 'success',
+                'data' =>[]
+            ]
+        );
+    }
+
 }

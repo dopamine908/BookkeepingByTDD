@@ -107,4 +107,22 @@ class BookkeepingTest extends TestCase
         //Actual
         $BookkeepingService->delete(1);
     }
+
+    /**
+     * @test
+     */
+    public function getBookkeeping()
+    {
+        //Arrange
+        $mock_bookkeeping_repo = Mockery::mock(BookkeepingRepo::class);
+        $mock_bookkeeping_repo->shouldReceive('get')->once();
+        $this->instance(BookkeepingRepo::class, $mock_bookkeeping_repo);
+        $BookkeepingService = $this->app->make(BookkeepingService::class);
+        $arrange_title = 'test';
+        $arrange_type = 'increase';
+        $arrange_amount = 123;
+
+        //Actual
+        $BookkeepingService->get($arrange_title, $arrange_type, $arrange_amount);
+    }
 }

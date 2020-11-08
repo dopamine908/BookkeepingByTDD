@@ -49,6 +49,10 @@ class BookkeepingController extends Controller
             $BookkeepingModel = $BookkeepingModel->where('type', '=', $request->type);
         }
 
+        if ( ! is_null($request->amount)) {
+            $BookkeepingModel = $BookkeepingModel->where('amount', '=', $request->amount);
+        }
+
         return new BookkeepingResourceCollection($BookkeepingModel->get());
     }
 }

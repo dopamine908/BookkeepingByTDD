@@ -153,4 +153,58 @@ class GET_BookkeepingTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function getBookkeeping_many_condition_200()
+    {
+        //Arrange
+        $original_data = Bookkeeping::factory()->count(4)->state(
+            new Sequence(
+                [
+                    'title' => 'title1',
+                    'type' => 'increase',
+                    'amount' => 123
+                ],
+                [
+                    'title' => 'title2',
+                    'type' => 'increase',
+                    'amount' => 456
+                ],
+                [
+                    'title' => 'title3',
+                    'type' => 'decrease',
+                    'amount' => 123
+                ],
+                [
+                    'title' => 'title4',
+                    'type' => 'decrease',
+                    'amount' => 456
+                ]
+            )
+        )->create();
+        $search_title = 'title';
+        $search_type = 'decrease';
+        $search_amount = 456;
+        $expected_result = [
+            'title' => 'title4',
+            'type' => 'decrease',
+            'amount' => 456
+        ];
+
+        //Actual
+        $response = $this->get(
+            self::URL . '?' . 'title=' . $search_title . '&type=' . $search_type . '&amount=' . $search_amount
+        );
+
+        //Assert
+        $response->assertStatus(200);
+        $response->assertJson(
+            [
+                'status' => 'success',
+                'data' => [$expected_result]
+            ]
+        );
+    }
+
 }

@@ -30,6 +30,7 @@ class Read extends FormRequest
             'type' => [
                 Rule::in(['increase', 'decrease'])
             ],
+            'amount' => 'integer'
         ];
     }
 

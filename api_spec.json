@@ -162,6 +162,25 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "input error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "error": {
+                                        "summary": "error",
+                                        "value": {
+                                            "status": "fail",
+                                            "message": "input invalid"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "$ref": "#/components/schemas/input_invalid"
+                                }
+                            }
+                        }
                     }
                 }
             }

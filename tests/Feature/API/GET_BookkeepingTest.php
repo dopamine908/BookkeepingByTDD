@@ -254,4 +254,25 @@ class GET_BookkeepingTest extends TestCase
             ]
         );
     }
+
+    /**
+     * @test
+     */
+    public function getBookkeeping_amount_not_integer_422()
+    {
+        //Arrange
+        $search_target = 'string';
+
+        //Actual
+        $response = $this->get(self::URL . '?amount=' . $search_target);
+
+        //Assert
+        $response->assertStatus(422);
+        $response->assertJson(
+            [
+                'status' => 'fail',
+                'message' => 'input invalid'
+            ]
+        );
+    }
 }

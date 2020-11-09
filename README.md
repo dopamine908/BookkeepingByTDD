@@ -1,61 +1,219 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# TDD Bookkeeping
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 介紹
 
-## About Laravel
+這個專案是我嘗試著以我目前認知的TDD去做開發的一個練習，實作一個簡單的CRUD操作搭配RESTful API設計
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+以下會分為新增(C)、讀取(R)、修改(U)、刪除(D)去一個一個將完整的API建構出來
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+最終API的規格可以參考跟目錄底下的api_spec.json，這是我用[Swagger](https://swagger.io)規格寫的API文件
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+在撰寫每一隻API的時候基本會遵守TDD講求的先寫測試（紅燈），再開發（綠燈），然後重構（綠燈）大原則
 
-## Learning Laravel
+下面的內容會描述我在每一個開發的當下我想去做到的事情，以及盡可能地去闡述整個流程中我在每個時間點下的思考及想法，可以搭配所有Commit的訊息去對照查看
+## Creat
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 成功
+    1. 新增成功
+        1. API
+            - 紅燈 > 寫API測試
+            - 綠燈 > 在controller把全部寫好讓他綠燈
+        2. Repo
+            - 紅燈 > 寫整合測試，測試資料庫內是否存在資料
+            - 綠燈 > 在repo內寫新增的功能
+            - 綠燈 > [重構]將controller功能串接到repo上
+        3. Service 
+            - 紅燈 > 寫單元測試，假設repo會回傳true
+            - 綠燈 > 在service內寫新增的功能
+            - 綠燈 > [重構]將controller串接service
+### 失敗
+    1. 參數驗證錯誤
+        1. title(string) 參數驗證錯誤
+            1. 空值 
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON 
+        2. type(enum) 參數驗證錯誤
+            1. 空值
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON 
+            2. 非enum選項
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON 
+        3. amount(int) 參數驗證錯誤
+            1. 空值
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
+            2. 字串
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Update
 
-## Laravel Sponsors
+### 成功
+    1. 修改成功
+        1. API
+            - 紅燈 > 寫API測試
+            - 綠燈 > 在controller把全部寫好讓他綠燈
+        2. Repo
+            - 紅燈 > 寫整合測試，測試資料庫內是否存在資料
+            - 綠燈 > 在repo內寫新增的功能
+            - 綠燈 > [重構]將controller功能串接到repo上
+        3. Service 
+            - 紅燈 > 寫單元測試，假設repo會回傳true
+            - 綠燈 > 在service內寫新增的功能
+            - 綠燈 > [重構]將controller串接service
+### 失敗
+    1. 參數驗證錯誤
+        1. title(string) 參數驗證錯誤
+            1. 空值 
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON 
+        2. type(enum) 參數驗證錯誤
+            1. 空值
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON 
+            2. 非enum選項
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON 
+        3. amount(int) 參數驗證錯誤
+            1. 空值
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
+            2. 字串
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
+        4. id(int)
+            1. 空值
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
+            2. 字串
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
+   
+    2. 無此ID(id格式正確，但沒有此id可以做更新)
+        1. API
+            - 紅燈 > 寫API測試
+            - 綠燈 > 在controller內判斷id不存在則返回對應json
+        2. Repo
+            - 紅燈 > 整合測試，如找不到id應該會有exception拋出(驗證exception)
+            - 綠燈 > 新增exception，並在找不到id的時候拋出
+            - 綠燈 > [重構]將controller的判斷取消，改以exception處理id不存在的狀況 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Delete
 
-### Premium Partners
+### 成功
+    1. 刪除成功
+        1. API
+            - 紅燈 > 寫API測試
+            - 綠燈 > 在controller把全部寫好讓他綠燈
+        2. Repo
+            - 紅燈 > 寫整合測試，測試資料庫內是否存在資料
+            - 綠燈 > 在repo內寫新增的功能
+            - 綠燈 > [重構]將controller功能串接到repo上
+        3. Service 
+            - 紅燈 > 寫單元測試，假設repo會回傳true
+            - 綠燈 > 在service內寫新增的功能
+            - 綠燈 > [重構]將controller串接service
+### 失敗
+    1. 參數驗證錯誤
+        1. id(int)
+            1. 空值
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
+            2. 字串
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
+   
+    2. 無此ID(id格式正確，但沒有此id可以做更新)
+        1. API
+            - 紅燈 > 寫API測試
+            - 綠燈 > 在controller內判斷id不存在則返回對應json
+        2. Repo
+            - 紅燈 > 整合測試，如找不到id應該會有exception拋出(驗證exception)
+            - 綠燈 > 新增exception，並在找不到id的時候拋出
+            - 綠燈 > [重構]將controller的判斷取消，改以exception處理id不存在的狀況 
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+## Read
 
-## Contributing
+### 成功
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    1. 單一欄位搜尋
+        1. 搜尋到一筆
+            1. API
+                - 紅燈 > 寫API測試
+                - 綠燈 > 在controller把全部寫好讓他綠燈
+                - 綠燈 > [重構]新增ResourceCollection包裝JSON
+            2. Repo
+                - 紅燈 > 寫整合測試，測試資料庫內是否存在資料
+                - 綠燈 > 在repo內寫新增的功能
+                - 綠燈 > [重構]將controller功能串接到repo上
+            3. Service 
+                - 紅燈 > 寫單元測試，假設repo會回傳true
+                - 綠燈 > 在service內寫新增的功能
+                - 綠燈 > [重構]將controller串接service
+        2. 搜尋到多筆
+            1. API
+            2. Repo
+            3. Service 
+        3. 搜尋結果為空
+            1. API
+            2. Repo
+            3. Service 
+    2. 多欄位搜尋
+        1. 搜尋到一筆
+            1. API
+            2. Repo
+            3. Service 
+        2. 搜尋到多筆
+            1. API
+            2. Repo
+            3. Service 
+        3. 搜尋結果為空
+            1. API
+            2. Repo
+            3. Service 
 
-## Code of Conduct
+### 失敗
+    1. 參數驗證錯誤
+        1. type(enum) 參數驗證錯誤
+            1. 非enum選項
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON 
+        2. amount(int) 參數驗證錯誤
+            1. 字串
+                1. API
+                    - 紅燈 > 寫API測試
+                    - 綠燈 > 新增Request阻擋錯誤，並回傳JSON
+   
+## Commit 格式
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+> [燈號]-CASE-回傳成功/失敗-模組-[動作]-訊息
 
-## Security Vulnerabilities
+[紅]-C-回傳成功-API-[撰寫測試]-API測試
+[綠]-C-回傳成功-API-[撰寫功能]-在controller把全部寫好讓他綠燈
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+[紅]-C-回傳成功-Repo-[撰寫測試]-寫整合測試，測試資料庫內是否存在資料
+[綠]-C-回傳成功-Repo-[撰寫功能]-在repo內寫新增的功能
+[綠]-C-回傳成功-Repo-[重構]-將controller功能串接到repo上
 
-## License
+[紅]-C-回傳失敗-Repo-[撰寫測試]-title輸入空值，寫API測試
+[綠]-C-回傳失敗-Repo-[撰寫功能]-新增Request阻擋錯誤
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+*-add migration
+*-add seeds
+*-modify factory

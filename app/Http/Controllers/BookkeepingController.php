@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Bookkeeping\Create;
 use App\Http\Requests\Bookkeeping\Delete;
+use App\Http\Requests\Bookkeeping\Read;
 use App\Http\Requests\Bookkeeping\Update;
 use App\Http\Resources\BookkeepingResourceCollection;
 use App\Services\Bookkeeping as BookkeepingService;
-use Illuminate\Http\Request;
 
 class BookkeepingController extends Controller
 {
@@ -36,7 +36,7 @@ class BookkeepingController extends Controller
         return response()->json(['status' => 'success'], 201);
     }
 
-    public function read(Request $request)
+    public function read(Read $request)
     {
         $result = $this->BookkeepingService->get($request->title, $request->type, $request->amount);
         return new BookkeepingResourceCollection($result);

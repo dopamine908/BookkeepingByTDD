@@ -207,6 +207,9 @@ class GET_BookkeepingTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
     public function getBookkeeping_empty_result_200()
     {
         //Arrange
@@ -216,7 +219,7 @@ class GET_BookkeepingTest extends TestCase
                 ['amount' => 456],
             )
         )->create();
-        $search_target = $original_data->first()->title.'1';
+        $search_target = $original_data->first()->title . '1';
 
         //Actual
         $response = $this->get(self::URL . '?title=' . $search_target);
@@ -226,9 +229,29 @@ class GET_BookkeepingTest extends TestCase
         $response->assertJson(
             [
                 'status' => 'success',
-                'data' =>[]
+                'data' => []
             ]
         );
     }
 
+    /**
+     * @test
+     */
+    public function getBookkeeping_type_type_not_increase_or_decrease_422()
+    {
+        //Arrange
+        $search_target = 'not_increase_or_decrease';
+
+        //Actual
+        $response = $this->get(self::URL . '?type=' . $search_target);
+
+        //Assert
+        $response->assertStatus(422);
+        $response->assertJson(
+            [
+                'status' => 'fail',
+                'message' => 'input invalid'
+            ]
+        );
+    }
 }

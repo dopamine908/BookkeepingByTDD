@@ -16,7 +16,7 @@ class PUT_BookkeepingTest extends TestCase
     /**
      * @test
      */
-    public function updateBookkeeping_success_201()
+    public function updateBookkeeping_success_204()
     {
         //Arrange
         $original_data = Bookkeeping::factory()->create();
@@ -30,12 +30,7 @@ class PUT_BookkeepingTest extends TestCase
         $response = $this->put(self::URL . '/' . $original_data->id, $arrange_data);
 
         //Assert
-        $response->assertStatus(201);
-        $response->assertJson(
-            [
-                'status' => 'success'
-            ]
-        );
+        $response->assertStatus(204);
         $this->assertDatabaseHas('Bookkeeping', $arrange_data);
         $this->assertDatabaseMissing('Bookkeeping', $original_data->toArray());
     }
@@ -231,10 +226,11 @@ class PUT_BookkeepingTest extends TestCase
     /**
      * @test
      */
-    public function updateBookkeeping_id_resource_not_exist_404(){
+    public function updateBookkeeping_id_resource_not_exist_404()
+    {
         //Arrange
         $original_data = Bookkeeping::factory()->create();
-        $not_exist_id=$original_data->id+99999;
+        $not_exist_id = $original_data->id + 99999;
         $arrange_data = [
             'title' => 'new_title',
             'type' => 'decrease',

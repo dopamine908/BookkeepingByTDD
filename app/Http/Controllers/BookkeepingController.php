@@ -27,13 +27,13 @@ class BookkeepingController extends Controller
     public function update(Update $request, $id)
     {
         $this->BookkeepingService->update($id, $request->title, $request->type, $request->amount);
-        return response()->json(['status' => 'success'], 201);
+        return response()->json(null, 204);
     }
 
     public function delete(Delete $request, $id)
     {
         $this->BookkeepingService->delete($id);
-        return response()->json(['status' => 'success'], 201);
+        return response()->json(null, 204);
     }
 
     public function read(Read $request)

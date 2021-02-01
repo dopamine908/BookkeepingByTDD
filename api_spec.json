@@ -200,7 +200,7 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "204": {
                         "description": "delete success",
                         "content": {
                             "application/json": {
@@ -303,7 +303,7 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "204": {
                         "description": "update success",
                         "content": {
                             "application/json": {

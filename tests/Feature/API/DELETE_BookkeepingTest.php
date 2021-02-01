@@ -16,7 +16,7 @@ class DELETE_BookkeepingTest extends TestCase
     /**
      * @test
      */
-    public function deleteBookkeeping_success_201()
+    public function deleteBookkeeping_success_204()
     {
         //Arrange
         $original_data = Bookkeeping::factory()->create();
@@ -24,13 +24,7 @@ class DELETE_BookkeepingTest extends TestCase
         //Actual
         $response = $this->delete(self::URL . '/' . $original_data->id);
 
-        //Assert
-        $response->assertStatus(201);
-        $response->assertJson(
-            [
-                'status' => 'success'
-            ]
-        );
+        $response->assertStatus(204);
         $this->assertDatabaseMissing(
             'Bookkeeping',
             Arr::except($original_data->toArray(), ['updated_at', 'created_at'])
